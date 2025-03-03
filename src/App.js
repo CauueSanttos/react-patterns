@@ -10,7 +10,7 @@ function App() {
         shouldDisplay={shouldDisplay}
         onClose={() => setShouldDisplay(false)}
       >
-        <h3>I'm the body of the modal</h3>
+        <h3>I&apos;m the body of the modal</h3>
         <p>This is a controlled modal</p>
       </ControlledModal>
 
