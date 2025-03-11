@@ -1,4 +1,5 @@
-import { UncontrolledFlow } from './components/uncontrolled-flow'
+import { useState } from 'react'
+import { ControlledFlow } from './components/controlled-flow'
 
 const StepOne = ({ goNext }) => {
   return (
@@ -12,7 +13,7 @@ const StepTwo = ({ goNext }) => {
   return (
     <>
       <h1>Step #2: Enter your age:</h1>
-      <button onClick={() => goNext({ age: 25 })}>Next</button>
+      <button onClick={() => goNext({ age: 26 })}>Next</button>
     </>
   )
 }
@@ -20,25 +21,42 @@ const StepTwo = ({ goNext }) => {
 const StepThree = ({ goNext }) => {
   return (
     <>
-      <h1>Step #3: Enter your country:</h1>
+      <h1>Congratulations! You qualify for the gift</h1>
+      <button onClick={() => goNext({})}>Next</button>
+    </>
+  )
+}
+
+const StepFourth = ({ goNext }) => {
+  return (
+    <>
+      <h1>Step #4: Enter your country:</h1>
       <button onClick={() => goNext({ country: 'Brazil' })}>Next</button>
     </>
   )
 }
 
 function App() {
+  const [data, setData] = useState({})
+  const [currentStep, setCurrentStep] = useState(0)
+
+  const onNext = (dataFromStep) => {
+    setData({
+      ...data,
+      ...dataFromStep,
+    })
+
+    setCurrentStep(currentStep + 1)
+  }
+
   return (
     <>
-      <UncontrolledFlow
-        onDone={(data) => {
-          console.log(data)
-          alert('Yaae, you made it to the final step!')
-        }}
-      >
+      <ControlledFlow currentIndex={currentStep} onNext={onNext}>
         <StepOne />
         <StepTwo />
-        <StepThree />
-      </UncontrolledFlow>
+        {data.age > 25 && <StepThree />}
+        <StepFourth />
+      </ControlledFlow>
     </>
   )
 }
